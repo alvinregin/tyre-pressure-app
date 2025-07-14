@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tyre Pressure Adjuster</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 400px;
+      margin: auto;
+      padding: 1rem;
+      background: #f4f4f4;
+      border-radius: 1rem;
+    }
+    h2 { text-align: center; }
+    label, select, input, button {
+      display: block;
+      width: 100%;
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+    #result {
+      background: #fff;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <h2>🧠 Tyre Pressure Adjuster</h2>
+
+  <label for="coldTarget">Your Cold Target Pressure (psi):</label>
+  <input type="number" id="coldTarget" placeholder="e.g. 32" required>
+
+  <label for="distance">How far have you driven?</label>
+  <select id="distance">
+    <option value="cold">Less than 2 km (Cold)</option>
+    <option value="city">3–8 km (City)</option>
+    <option value="highway">10+ km or Highway</option>
+  </select>
+
+  <button onclick="adjustPressure()">Calculate</button>
+
+  <div id="result"></div>
+
+  <script>
+    function adjustPressure() {
+      const coldTarget = parseFloat(document.getElementById('coldTarget').value);
+      const distance = document.getElementById('distance').value;
+      let recommendation = '';
+      let adjustedPressure = coldTarget;
+
+      if (isNaN(coldTarget)) {
+        recommendation = 'Please enter a valid cold target pressure.';
+      } else {
+        switch (distance) {
+          case 'cold':
+            recommendation = `Tyres are cold. Inflate to ${coldTarget} psi.`;
+            break;
+          case 'city':
+            recommendation = `Tyres are warm. Inflate to ${coldTarget + 2} to ${coldTarget + 3} psi.`;
+            break;
+          case 'highway':
+            recommendation = `Tyres are hot. Inflate to ${coldTarget + 4} psi.`;
+            break;
+        }
+        recommendation += `<br><br>🔁 Re-check next morning when tyres are cold and adjust if needed.`;
+      }
+
+      document.getElementById('result').innerHTML = recommendation;
+    }
+  </script>
+</body>
+</html>
